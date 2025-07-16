@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Contact Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #c355a4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #febdef;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        input[type="text"], input[type="email"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .contact-list {
+            margin-top: 24px;
+        }
+        .contact {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contact-info {
+            flex: 1;
+        }
+        .delete-btn {
+            background: #069a26;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background: #d2f4e2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Contact Book</h2>
+        <form id="contactForm">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="phone" placeholder="Phone" required>
+            <button type="submit">Add Contact</button>
+        </form>
+        <div class="contact-list" id="contactList"></div>
+    </div>
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        const contactList = document.getElementById('contactList');
+        let contacts = [];
+
+        function renderContacts() {
+            contactList.innerHTML = '';
+            contacts.forEach((contact, index) => {
+                const contactDiv = document.createElement('div');
+                contactDiv.className = 'contact';
+                contactDiv.innerHTML = `
+                    <div class="contact-info">
+                        <strong>${contact.name}</strong><br>
+                        <span>${contact.email}</span><br>
+                        <span>${contact.phone}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteContact(${index})">Delete</button>
+                `;
+                contactList.appendChild(contactDiv);
+            });
+        }
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            if (name && email && phone) {
+                contacts.push({ name, email, phone });
+                renderContacts();
+                contactForm.reset();
+            }
+        });
+
+        window.deleteContact = function(index) {
+            contacts.splice(index, 1);
+            renderContacts();
+        }
+    </script>
+</body>
+</html>
